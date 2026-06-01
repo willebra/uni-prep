@@ -224,8 +224,9 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
                   onClick={() => submitMcq(idx)}
                   disabled={revealed}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-lg border border-border bg-background p-3 text-left text-sm transition",
-                    !revealed && "hover:border-accent hover:bg-accent/5",
+                    "flex w-full items-center gap-3 rounded-lg border bg-background p-3 text-left text-sm transition",
+                    !revealed && "border-accent/40 shadow-sm hover:border-accent hover:bg-accent/10",
+                    revealed && !isCorrect && !isPicked && "border-border",
                     revealed && isCorrect && "border-success bg-success/10",
                     revealed && isPicked && !isCorrect && "border-destructive bg-destructive/10",
                   )}
