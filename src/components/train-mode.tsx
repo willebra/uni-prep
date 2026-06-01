@@ -23,6 +23,7 @@ type Base = {
   level?: number;
   context?: string;
   explanation: string;
+  plainExplanation?: string;
   sourceRef?: string;
 };
 export type Flashcard = Base & { type: "flashcard"; prompt: string; back: string };
