@@ -247,11 +247,65 @@ function SectionArticle({
         <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
           <BookOpen className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
           <span>
-            <span className="font-semibold text-foreground">Syvennä aineistossa:</span> {s.deepen}
+            <span className="font-semibold text-foreground">Syvennä aineistossa:</span>{" "}
+            {renderDeepen(s.deepen)}
           </span>
         </p>
       ) : null}
     </article>
   );
 }
+
+const SOURCE_LINKS: { match: RegExp; url: string }[] = [
+  {
+    match: /Tukimateriaali/g,
+    url: "https://www.helsinki.fi/assets/drupal/2026-06/Ennakkomateriaalin%20tueksi_final_suomi.pdf",
+  },
+  {
+    match: /Noetel/g,
+    url: "https://www.helsinki.fi/assets/drupal/2026-06/Noetel%20et%20al.%202024%2C%20Effect%20of%20exercise%20for%20depression.pdf",
+  },
+  {
+    match: /Simpson/g,
+    url: "https://www.helsinki.fi/assets/drupal/2026-06/Simpson_2023_Policy%20Effect%20Size%20and%20the%20Winner%20s%20Curse.pdf",
+  },
+];
+
+function renderDeepen(text: string) {
+  type Token = { text: string; url?: string };
+  let tokens: Token[] = [{ text }];
+  for (const { match, url } of SOURCE_LINKS) {
+    const next: Token[] = [];
+    for (const tok of tokens) {
+      if (tok.url) {
+        next.push(tok);
+        continue;
+      }
+      const parts = tok.text.split(match);
+      const hits = tok.text.match(match) ?? [];
+      parts.forEach((p, i) => {
+        if (p) next.push({ text: p });
+        if (i < hits.length) next.push({ text: hits[i], url });
+      });
+    }
+    tokens = next;
+  }
+  return tokens.map((t, i) =>
+    t.url ? (
+      <a
+        key={i}
+        href={t.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-baseline gap-0.5 font-medium text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent"
+      >
+        {t.text}
+        <ExternalLink className="h-3 w-3 self-center" />
+      </a>
+    ) : (
+      <span key={i}>{t.text}</span>
+    ),
+  );
+}
+
 
