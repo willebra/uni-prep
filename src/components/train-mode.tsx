@@ -335,10 +335,16 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
                 </div>
                 {!progress[i] && (
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => flashcardRate(false)}>
+                    <Button
+                      onClick={() => flashcardRate(false)}
+                      className="bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
+                    >
                       <X className="mr-2 h-4 w-4" /> En osannut
                     </Button>
-                    <Button onClick={() => flashcardRate(true)}>
+                    <Button
+                      onClick={() => flashcardRate(true)}
+                      className="bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
+                    >
                       <Check className="mr-2 h-4 w-4" /> Osasin
                     </Button>
                   </div>
