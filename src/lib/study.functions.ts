@@ -105,3 +105,31 @@ export const getMaterial = createServerFn({ method: "GET" })
     if (!row) throw new Error("Not found");
     return row;
   });
+
+export const listMaterials = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const { data, error } = await supabaseAdmin
+      .from("materials")
+      .select("id,title,study,created_at")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (error) throw new Error(error.message);
+    return (data ?? []).map((m) => {
+      const study = (m.study ?? {}) as {
+        summary?: string;
+        sections?: unknown[];
+        keyConcepts?: unknown[];
+      };
+      return {
+        id: m.id,
+        title: m.title,
+        created_at: m.created_at,
+        summary: study.summary ?? "",
+        sectionCount: Array.isArray(study.sections) ? study.sections.length : 0,
+        conceptCount: Array.isArray(study.keyConcepts)
+          ? study.keyConcepts.length
+          : 0,
+      };
+    });
+  },
+);
