@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
+import { Link } from "@tanstack/react-router";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, Circle, XCircle, MinusCircle, Trophy } from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, XCircle, MinusCircle, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type Outcome = "correct" | "wrong" | "skipped";
