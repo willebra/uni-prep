@@ -321,8 +321,12 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
         {q.type === "flashcard" && (
           <div className="mt-4 space-y-3">
             {!revealed ? (
-              <Button onClick={() => setRevealed(true)} variant="secondary">
-                <Eye className="mr-2 h-4 w-4" /> Näytä selitys
+              <Button
+                onClick={() => setRevealed(true)}
+                size="lg"
+                className="w-full shadow-md"
+              >
+                <Eye className="mr-2 h-5 w-5" /> Tarkista selitys tästä
               </Button>
             ) : (
               <>
