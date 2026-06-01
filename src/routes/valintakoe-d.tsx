@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
+  Calendar,
   ClipboardList,
   ExternalLink,
   FileText,
@@ -107,6 +108,11 @@ function ValintakoeDPage() {
             icon={<ListChecks className="h-4 w-4" />}
             label="Opiskelukokonaisuudet"
             value="5 (M1–M5)"
+          />
+          <InfoCard
+            icon={<Calendar className="h-4 w-4" />}
+            label="Koeajankohta"
+            value="3.6.2026"
           />
           <ScoringCard />
         </section>
@@ -345,7 +351,7 @@ function InfoCard({
 
 function ScoringCard() {
   return (
-    <div className="rounded-xl border border-border bg-card p-4 shadow-soft">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-soft sm:col-span-3">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <Target className="h-4 w-4" />
         Pisteytys
