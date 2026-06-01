@@ -30,21 +30,21 @@ export const Route = createFileRoute("/valintakoe-d")({
     meta: [
       {
         title:
-          "Valintakoe D — Yhteinen osio | Yliopistojen yhteisvalinta",
+          "Uniprep — Valintakoe D, yhteinen osio (psykologia, logopedia, terveys-/hoitotieteet, liikuntabiologia)",
       },
       {
         name: "description",
         content:
-          "Harjoittele Valintakoe D:n yhteistä osiota (psykologia, logopedia, terveys-/hoitotieteet, liikuntabiologia). Opiskelukokonaisuudet M1–M5 ja harjoitteet.",
+          "Harjoittele yliopistojen yhteisvalinnan Valintakoe D:n yhteistä osiota: psykologia, logopedia, terveys-/hoitotieteet ja liikuntabiologia. Opiskelukokonaisuudet M1–M5, pisteytys ja harjoitteet.",
       },
       {
         property: "og:title",
-        content: "Valintakoe D — Yhteinen osio",
+        content: "Uniprep — Valintakoe D, yhteinen osio",
       },
       {
         property: "og:description",
         content:
-          "Opiskelukokonaisuudet M1–M5 ja koetehtävät yliopistojen yhteisvalinnan Valintakoe D:n yhteiseen osioon.",
+          "Valmistaudu Valintakoe D:n yhteiseen osioon: psykologia, logopedia, terveys-/hoitotieteet ja liikuntabiologia. Opiskelukokonaisuudet M1–M5 ja harjoitteet.",
       },
     ],
   }),
