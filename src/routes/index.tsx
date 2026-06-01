@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Library,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createMaterial, listMaterials } from "@/lib/study.functions";
 import { extractPdfText } from "@/lib/pdf-extract";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { buttonVariants } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
