@@ -209,10 +209,14 @@ export function ProgressMeter({
         )}
 
         {nextModule ? (
-          <Button asChild size="sm" className="shrink-0">
+          <Button
+            asChild
+            size="default"
+            className="shrink-0 shadow-md ring-2 ring-accent/40 ring-offset-2 ring-offset-card transition-all hover:ring-accent hover:shadow-lg"
+          >
             <Link to="/m/$id" params={{ id: nextModule.id }}>
               Siirry seuraavaan tehtävään
-              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+              <ArrowRight className="ml-1.5 h-4 w-4" />
             </Link>
           </Button>
         ) : aggregate.total > 0 ? (

@@ -393,12 +393,21 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
         )}
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <Button variant="ghost" size="sm" onClick={reset}>
           <RotateCcw className="mr-2 h-4 w-4" /> Nollaa edistyminen
         </Button>
-        <Button onClick={next} disabled={!revealed}>
-          Seuraava <ChevronRight className="ml-1 h-4 w-4" />
+        <Button
+          onClick={next}
+          disabled={!revealed}
+          size="lg"
+          className={cn(
+            "shadow-md transition-all",
+            revealed &&
+              "ring-2 ring-accent/50 ring-offset-2 ring-offset-background hover:ring-accent hover:shadow-lg motion-safe:animate-pulse",
+          )}
+        >
+          Seuraava tehtävä <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
