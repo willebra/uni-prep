@@ -5,6 +5,9 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
+  ClipboardList,
+  ExternalLink,
+  FileText,
   GraduationCap,
   Loader2,
   Target,
@@ -12,6 +15,13 @@ import {
   ListChecks,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { listMaterials } from "@/lib/study.functions";
 
 export const Route = createFileRoute("/valintakoe-d")({
