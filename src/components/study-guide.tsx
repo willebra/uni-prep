@@ -6,6 +6,7 @@ export type Kouluaste = "lukio" | "syventävä" | "perustaso";
 
 export type KeyConcept = {
   term: string;
+  en?: string;
   definition: string;
   source?: string;
   official?: string;
@@ -64,6 +65,9 @@ function ConceptCard({ c }: { c: KeyConcept }) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-sm font-semibold text-foreground">{c.term}</div>
+          {c.en ? (
+            <div className="mt-0.5 text-xs italic text-muted-foreground">· {c.en}</div>
+          ) : null}
           <div className="mt-1 text-sm text-muted-foreground">{c.definition}</div>
         </div>
         {c.kouluaste ? <KouluasteBadge value={c.kouluaste} /> : null}
