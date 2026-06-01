@@ -162,10 +162,11 @@ export function StudyGuide({ study }: { study: StudyData }) {
         <div className="mb-3 flex items-start gap-2 rounded-lg border border-border bg-card/60 p-3 text-xs leading-relaxed text-muted-foreground">
           <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
           <p>
-            <span className="font-semibold text-success">Vihreä</span> = lukiosta tuttua,{" "}
-            <span className="font-semibold text-accent-foreground">oranssi</span> = yliopistotason
-            syventävää (ennakkomateriaali on tarkoituksella vaativaa). Syventävät linkit ovat
-            oppimisen apuna — eivät kuulu kokeeseen.
+            <span className="rounded bg-success/15 px-1.5 py-0.5 font-semibold text-success">Vihreä</span>{" "}
+            = lukiosta tuttua,{" "}
+            <span className="rounded bg-accent/20 px-1.5 py-0.5 font-semibold text-foreground">oranssi</span>{" "}
+            = yliopistotason syventävää (ennakkomateriaali on tarkoituksella vaativaa).
+            Lisämateriaalilinkit ovat oppimisen apuna — eivät kuulu kokeeseen.
           </p>
         </div>
 
