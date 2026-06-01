@@ -351,7 +351,7 @@ function InfoCard({
 
 function ScoringCard() {
   return (
-    <div className="rounded-xl border border-border bg-card p-4 shadow-soft">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-soft sm:col-span-3">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <Target className="h-4 w-4" />
         Pisteytys
