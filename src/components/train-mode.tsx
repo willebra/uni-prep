@@ -287,7 +287,11 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
               {q.unit && <span className="text-sm text-muted-foreground">{q.unit}</span>}
             </div>
             {!revealed && (
-              <Button onClick={submitNumeric} disabled={answer.trim().length === 0}>
+              <Button
+                onClick={submitNumeric}
+                disabled={answer.trim().length === 0}
+                className="bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
+              >
                 Tarkista
               </Button>
             )}
