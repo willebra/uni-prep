@@ -23,6 +23,7 @@ type Base = {
   level?: number;
   context?: string;
   explanation: string;
+  plainExplanation?: string;
   sourceRef?: string;
 };
 export type Flashcard = Base & { type: "flashcard"; prompt: string; back: string };
@@ -396,10 +397,22 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
             )}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Selitys
+                Selkokielinen selitys
               </div>
-              <p className="mt-1 whitespace-pre-wrap text-sm">{q.explanation}</p>
+              <p className="mt-1 whitespace-pre-wrap text-sm">
+                {q.plainExplanation ?? q.explanation}
+              </p>
             </div>
+            {q.plainExplanation && (
+              <div className="border-t border-border pt-3">
+                <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Tarkka perustelu
+                </div>
+                <p className="mt-1 whitespace-pre-wrap text-xs text-muted-foreground">
+                  {q.explanation}
+                </p>
+              </div>
+            )}
             {q.sourceRef && (
               <div className="flex items-start gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
                 <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0" />
