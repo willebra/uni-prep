@@ -317,7 +317,11 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
               disabled={revealed}
             />
             {!revealed && (
-              <Button onClick={submitShort} disabled={answer.trim().length < 3}>
+              <Button
+                onClick={submitShort}
+                disabled={answer.trim().length < 3}
+                className="bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
+              >
                 Tarkista
               </Button>
             )}
