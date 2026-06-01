@@ -126,13 +126,13 @@ function ConceptCard({ c }: { c: KeyConcept }) {
                     href={c.link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-md bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground shadow-sm transition hover:bg-accent/90"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
                   >
-                    Syventävä linkki
+                    Lisämateriaali verkossa
                     <ExternalLink className="h-3 w-3" />
                   </a>
                   <span className="text-[11px] text-muted-foreground">
-                    ei kokeessa
+                    ei kuulu kokeeseen
                   </span>
                 </div>
               ) : null}
