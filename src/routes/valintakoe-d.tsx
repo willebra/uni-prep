@@ -10,6 +10,7 @@ import {
   ExternalLink,
   FileText,
   GraduationCap,
+  Info,
   Loader2,
   Target,
   Clock,
