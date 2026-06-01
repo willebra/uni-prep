@@ -12,9 +12,9 @@ import { TrainMode, type Question } from "@/components/train-mode";
 export const Route = createFileRoute("/m/$id")({
   head: ({ params }) => ({
     meta: [
-      { title: `Study pack — CramPad` },
+      { title: `Study pack — Uniprep` },
       { name: "description", content: "AI-generated study guide and practice questions." },
-      { property: "og:title", content: `Study pack ${params.id.slice(0, 8)} — CramPad` },
+      { property: "og:title", content: `Study pack ${params.id.slice(0, 8)} — Uniprep` },
     ],
   }),
   component: MaterialPage,

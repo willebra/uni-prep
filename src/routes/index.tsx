@@ -23,15 +23,21 @@ import { extractPdfText } from "@/lib/pdf-extract";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "CramPad — Last-minute exam study & training" },
+      { title: "Uniprep — Last-minute exam study & training" },
       {
         name: "description",
         content:
           "Browse ready-made study packs or paste your own material. Get an AI study guide and adaptive practice questions.",
       },
-      { property: "og:title", content: "CramPad — Last-minute exam prep" },
+      { property: "og:title", content: "Uniprep — Last-minute exam prep" },
+      { name: "twitter:title", content: "Uniprep — Last-minute exam prep" },
       {
         property: "og:description",
+        content:
+          "Browse ready-made exam study packs, or turn fresh material into structured notes and practice questions in seconds.",
+      },
+      {
+        name: "twitter:description",
         content:
           "Browse ready-made exam study packs, or turn fresh material into structured notes and practice questions in seconds.",
       },
@@ -50,7 +56,7 @@ function Home() {
           <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground">
             <BookOpen className="h-5 w-5" />
           </div>
-          <span className="text-lg font-semibold tracking-tight">CramPad</span>
+          <span className="text-lg font-semibold tracking-tight">Uniprep</span>
         </div>
         {view === "library" ? (
           <Button
