@@ -108,33 +108,50 @@ export function ProgressMeter({
   modules: { id: string; title: string; total: number }[];
   title?: string;
 }) {
-  // Subscribe to each module's progress so the meter updates live
+  // Single subscription that bumps a tick on any progress change, so we can
+  // re-read all module keys on render without violating rules-of-hooks.
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const refresh = () => setTick((t) => t + 1);
+    const onStorage = (e: StorageEvent) => {
+      if (!e.key || e.key.startsWith("crampad:progress:")) refresh();
+    };
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    window.addEventListener("storage", onStorage);
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("crampad:progress", refresh);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("crampad:progress", refresh);
+    };
+  }, []);
+
   const perModule = modules.map((m) => ({
     ...m,
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    progress: useMaterialProgress(m.id),
+    stats: computeStats(readProgress(m.id), m.total),
   }));
 
-  const aggregate = useMemo(() => {
-    let answered = 0,
-      correct = 0,
-      wrong = 0,
-      skipped = 0,
-      total = 0;
-    for (const m of perModule) {
-      const s = computeStats(m.progress, m.total);
-      answered += s.answered;
-      correct += s.correct;
-      wrong += s.wrong;
-      skipped += s.skipped;
-      total += s.total;
-    }
-    const percent = total > 0 ? Math.min(100, Math.round((answered / total) * 100)) : 0;
-    return { answered, correct, wrong, skipped, total, percent };
-  }, [perModule]);
+  const aggregate = perModule.reduce(
+    (acc, m) => {
+      acc.answered += m.stats.answered;
+      acc.correct += m.stats.correct;
+      acc.wrong += m.stats.wrong;
+      acc.skipped += m.stats.skipped;
+      acc.total += m.stats.total;
+      return acc;
+    },
+    { answered: 0, correct: 0, wrong: 0, skipped: 0, total: 0 },
+  );
+  const percent =
+    aggregate.total > 0
+      ? Math.min(100, Math.round((aggregate.answered / aggregate.total) * 100))
+      : 0;
 
   const completedModules = perModule.filter(
-    (m) => m.total > 0 && computeStats(m.progress, m.total).answered >= m.total,
+    (m) => m.total > 0 && m.stats.answered >= m.total,
   ).length;
 
   return (
