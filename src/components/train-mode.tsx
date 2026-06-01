@@ -1,35 +1,83 @@
 import { useEffect, useMemo, useState } from "react";
-import { Check, X, RotateCcw, ChevronRight, Quote } from "lucide-react";
+import { Check, X, RotateCcw, ChevronRight, Quote, SkipForward, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export type MCQ = {
+type Base = {
+  id?: string;
+  level?: number;
+  context?: string;
+  explanation: string;
+  sourceRef?: string;
+};
+export type Flashcard = Base & { type: "flashcard"; prompt: string; back: string };
+export type TF = Base & { type: "tf"; prompt: string; correct: boolean };
+export type MCQ = Base & {
   type: "mcq";
   prompt: string;
   choices: string[];
   correctIndex: number;
-  explanation: string;
-  sourceRef: string;
 };
-export type Short = {
+export type Numeric = Base & {
+  type: "numeric";
+  prompt: string;
+  correctAnswer: number;
+  tolerance?: number;
+  unit?: string;
+};
+export type Short = Base & {
   type: "short";
   prompt: string;
   modelAnswer: string;
   keywords: string[];
-  explanation: string;
-  sourceRef: string;
 };
-export type Question = MCQ | Short;
+export type Question = Flashcard | TF | MCQ | Numeric | Short;
 
-type Progress = Record<number, { correct: boolean; ts: number }>;
+type Outcome = "correct" | "wrong" | "skipped" | "studied";
+type Entry = { outcome: Outcome; points: number; ts: number };
+type Progress = Record<number, Entry>;
+
+// Viralliset pisteytyskaavat
+const SCORE = {
+  tf: { correct: 1.1, wrong: -0.4, skip: -0.2 },
+  mcq: { correct: 2.2, wrong: -0.7, skip: -0.2 },
+  numeric: { correct: 2.2, wrong: -0.7, skip: -0.2 },
+} as const;
+
+function scoreFor(q: Question, outcome: Outcome): number {
+  if (q.type === "flashcard" || q.type === "short") return 0;
+  const s = SCORE[q.type];
+  if (outcome === "correct") return s.correct;
+  if (outcome === "wrong") return s.wrong;
+  if (outcome === "skipped") return s.skip;
+  return 0;
+}
+
+function typeLabel(t: Question["type"]): string {
+  switch (t) {
+    case "flashcard":
+      return "Käsitekortti";
+    case "tf":
+      return "Tosi / epätosi";
+    case "mcq":
+      return "Monivalinta";
+    case "numeric":
+      return "Laskutehtävä";
+    case "short":
+      return "Lyhyt vastaus";
+  }
+}
 
 export function TrainMode({ materialId, questions }: { materialId: string; questions: Question[] }) {
   const storageKey = `crampad:progress:${materialId}`;
   const [progress, setProgress] = useState<Progress>({});
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [tfPick, setTfPick] = useState<boolean | null>(null);
   const [answer, setAnswer] = useState("");
   const [revealed, setRevealed] = useState(false);
 
@@ -47,22 +95,34 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
   }, [progress, storageKey]);
 
   const q = questions[i];
+
   const stats = useMemo(() => {
     const entries = Object.values(progress);
-    const correct = entries.filter((e) => e.correct).length;
-    return { answered: entries.length, correct, total: questions.length };
+    const correct = entries.filter((e) => e.outcome === "correct").length;
+    const wrong = entries.filter((e) => e.outcome === "wrong").length;
+    const skipped = entries.filter((e) => e.outcome === "skipped").length;
+    const points = entries.reduce((s, e) => s + (e.points || 0), 0);
+    return { answered: entries.length, correct, wrong, skipped, points, total: questions.length };
   }, [progress, questions.length]);
+
+  function record(outcome: Outcome) {
+    const points = scoreFor(q, outcome);
+    setProgress((p) => ({ ...p, [i]: { outcome, points, ts: Date.now() } }));
+    setRevealed(true);
+  }
 
   function reset() {
     setProgress({});
     setI(0);
     setPicked(null);
+    setTfPick(null);
     setAnswer("");
     setRevealed(false);
   }
 
   function next() {
     setPicked(null);
+    setTfPick(null);
     setAnswer("");
     setRevealed(false);
     setI((p) => (p + 1) % questions.length);
@@ -71,18 +131,42 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
   function submitMcq(idx: number) {
     if (revealed) return;
     setPicked(idx);
-    setRevealed(true);
     const correct = idx === (q as MCQ).correctIndex;
-    setProgress((p) => ({ ...p, [i]: { correct, ts: Date.now() } }));
+    record(correct ? "correct" : "wrong");
+  }
+
+  function submitTf(value: boolean) {
+    if (revealed) return;
+    setTfPick(value);
+    const correct = value === (q as TF).correct;
+    record(correct ? "correct" : "wrong");
+  }
+
+  function submitNumeric() {
+    if (revealed) return;
+    const n = Number(answer.replace(",", "."));
+    if (Number.isNaN(n)) return;
+    const target = (q as Numeric).correctAnswer;
+    const tol = (q as Numeric).tolerance ?? 0.05;
+    const correct = Math.abs(n - target) <= tol;
+    record(correct ? "correct" : "wrong");
   }
 
   function submitShort() {
     if (revealed) return;
-    setRevealed(true);
     const kws = (q as Short).keywords.map((k) => k.toLowerCase());
     const hit = kws.filter((k) => answer.toLowerCase().includes(k)).length;
     const correct = kws.length === 0 ? answer.trim().length > 20 : hit / kws.length >= 0.5;
-    setProgress((p) => ({ ...p, [i]: { correct, ts: Date.now() } }));
+    record(correct ? "correct" : "wrong");
+  }
+
+  function skipQuestion() {
+    if (revealed) return;
+    record("skipped");
+  }
+
+  function flashcardRate(known: boolean) {
+    record(known ? "correct" : "wrong");
   }
 
   const pct = stats.total ? (stats.answered / stats.total) * 100 : 0;
@@ -91,24 +175,44 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
   return (
     <div className="space-y-5">
       <div className="rounded-xl border border-border bg-card p-4">
-        <div className="flex items-center justify-between text-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
           <span className="font-medium">
-            Question {i + 1} of {questions.length}
+            Tehtävä {i + 1} / {questions.length}
           </span>
-          <span className="text-muted-foreground">
-            {stats.correct}/{stats.answered} correct · {accuracy}% accuracy
-          </span>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span>
+              {stats.correct} oikein · {stats.wrong} väärin · {stats.skipped} tyhjää
+            </span>
+            <span className="font-semibold text-foreground">
+              {stats.points.toFixed(2).replace(".", ",")} p
+            </span>
+            <span>· {accuracy} % osuvuus</span>
+          </div>
         </div>
         <Progress value={pct} className="mt-2 h-1.5" />
       </div>
 
       <div className="rounded-xl border border-border bg-card p-5 md:p-6">
-        <div className="mb-1 text-xs font-medium uppercase tracking-wider text-accent">
-          {q.type === "mcq" ? "Multiple choice" : "Short answer"}
+        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs">
+          <span className="font-medium uppercase tracking-wider text-accent">
+            {typeLabel(q.type)}
+          </span>
+          {q.level && (
+            <Badge variant="secondary" className="text-[10px]">
+              Taso {q.level}
+            </Badge>
+          )}
         </div>
+
+        {q.context && (
+          <div className="mb-4 whitespace-pre-wrap rounded-lg border border-dashed border-border bg-secondary/40 p-3 text-sm text-foreground/90">
+            {q.context}
+          </div>
+        )}
+
         <h3 className="text-lg font-semibold leading-snug">{q.prompt}</h3>
 
-        {q.type === "mcq" ? (
+        {q.type === "mcq" && (
           <div className="mt-4 space-y-2">
             {q.choices.map((c, idx) => {
               const isCorrect = idx === q.correctIndex;
@@ -137,20 +241,113 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
               );
             })}
           </div>
-        ) : (
+        )}
+
+        {q.type === "tf" && (
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {[
+              { label: "Tosi", value: true },
+              { label: "Epätosi", value: false },
+            ].map((opt) => {
+              const isCorrect = opt.value === q.correct;
+              const isPicked = tfPick === opt.value;
+              return (
+                <button
+                  key={opt.label}
+                  onClick={() => submitTf(opt.value)}
+                  disabled={revealed}
+                  className={cn(
+                    "rounded-lg border border-border bg-background p-3 text-sm font-medium transition",
+                    !revealed && "hover:border-accent hover:bg-accent/5",
+                    revealed && isCorrect && "border-success bg-success/10",
+                    revealed && isPicked && !isCorrect && "border-destructive bg-destructive/10",
+                  )}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {q.type === "numeric" && (
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center gap-2">
+              <Input
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                placeholder="Numeerinen vastaus"
+                inputMode="decimal"
+                className="max-w-[240px]"
+                disabled={revealed}
+              />
+              {q.unit && <span className="text-sm text-muted-foreground">{q.unit}</span>}
+            </div>
+            {!revealed && (
+              <Button onClick={submitNumeric} disabled={answer.trim().length === 0}>
+                Tarkista
+              </Button>
+            )}
+            {revealed && (
+              <p className="text-sm">
+                Oikea vastaus:{" "}
+                <span className="font-semibold">
+                  {q.correctAnswer.toString().replace(".", ",")}
+                  {q.unit ? ` ${q.unit}` : ""}
+                </span>
+              </p>
+            )}
+          </div>
+        )}
+
+        {q.type === "short" && (
           <div className="mt-4 space-y-3">
             <Textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Write your answer…"
+              placeholder="Kirjoita vastauksesi…"
               className="min-h-[120px]"
               disabled={revealed}
             />
             {!revealed && (
               <Button onClick={submitShort} disabled={answer.trim().length < 3}>
-                Check answer
+                Tarkista
               </Button>
             )}
+          </div>
+        )}
+
+        {q.type === "flashcard" && (
+          <div className="mt-4 space-y-3">
+            {!revealed ? (
+              <Button onClick={() => setRevealed(true)} variant="secondary">
+                <Eye className="mr-2 h-4 w-4" /> Näytä selitys
+              </Button>
+            ) : (
+              <>
+                <div className="rounded-lg border border-border bg-secondary/40 p-4 text-sm">
+                  {q.back}
+                </div>
+                {!progress[i] && (
+                  <div className="flex gap-2">
+                    <Button variant="outline" onClick={() => flashcardRate(false)}>
+                      <X className="mr-2 h-4 w-4" /> En osannut
+                    </Button>
+                    <Button onClick={() => flashcardRate(true)}>
+                      <Check className="mr-2 h-4 w-4" /> Osasin
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        {(q.type === "mcq" || q.type === "tf" || q.type === "numeric") && !revealed && (
+          <div className="mt-4">
+            <Button variant="ghost" size="sm" onClick={skipQuestion}>
+              <SkipForward className="mr-2 h-4 w-4" /> Jätän vastaamatta (−0,2 p)
+            </Button>
           </div>
         )}
 
@@ -159,31 +356,48 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
             {q.type === "short" && (
               <div>
                 <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Model answer
+                  Mallivastaus
                 </div>
                 <p className="mt-1 text-sm">{q.modelAnswer}</p>
               </div>
             )}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Explanation
+                Selitys
               </div>
-              <p className="mt-1 text-sm">{q.explanation}</p>
+              <p className="mt-1 whitespace-pre-wrap text-sm">{q.explanation}</p>
             </div>
-            <div className="flex items-start gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
-              <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-              <span className="italic">"{q.sourceRef}"</span>
-            </div>
+            {q.sourceRef && (
+              <div className="flex items-start gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
+                <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <span className="italic">"{q.sourceRef}"</span>
+              </div>
+            )}
+            {progress[i] && (
+              <div className="border-t border-border pt-3 text-xs">
+                <span className="text-muted-foreground">Pisteet tästä tehtävästä: </span>
+                <span
+                  className={cn(
+                    "font-semibold",
+                    progress[i].points > 0 && "text-success",
+                    progress[i].points < 0 && "text-destructive",
+                  )}
+                >
+                  {progress[i].points > 0 ? "+" : ""}
+                  {progress[i].points.toFixed(2).replace(".", ",")} p
+                </span>
+              </div>
+            )}
           </div>
         )}
       </div>
 
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" onClick={reset}>
-          <RotateCcw className="mr-2 h-4 w-4" /> Reset progress
+          <RotateCcw className="mr-2 h-4 w-4" /> Nollaa edistyminen
         </Button>
-        <Button onClick={next} disabled={!revealed && q.type === "mcq" ? picked === null : !revealed}>
-          Next question <ChevronRight className="ml-1 h-4 w-4" />
+        <Button onClick={next} disabled={!revealed}>
+          Seuraava <ChevronRight className="ml-1 h-4 w-4" />
         </Button>
       </div>
     </div>
