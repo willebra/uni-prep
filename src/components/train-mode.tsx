@@ -259,8 +259,9 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
                   onClick={() => submitTf(opt.value)}
                   disabled={revealed}
                   className={cn(
-                    "rounded-lg border border-border bg-background p-3 text-sm font-medium transition",
-                    !revealed && "hover:border-accent hover:bg-accent/5",
+                    "rounded-lg border bg-background p-3 text-sm font-medium transition",
+                    !revealed && "border-accent bg-accent/10 text-accent-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
+                    revealed && !isCorrect && !isPicked && "border-border",
                     revealed && isCorrect && "border-success bg-success/10",
                     revealed && isPicked && !isCorrect && "border-destructive bg-destructive/10",
                   )}
