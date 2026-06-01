@@ -125,7 +125,7 @@ function MaterialPage() {
             </TabsTrigger>
           <TabsTrigger
               value="train"
-              className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              className="data-[state=inactive]:bg-accent data-[state=inactive]:text-accent-foreground data-[state=inactive]:shadow-sm data-[state=inactive]:hover:bg-accent/90"
             >
               <Dumbbell className="mr-2 h-4 w-4" /> Train ({questions.length})
             </TabsTrigger>
