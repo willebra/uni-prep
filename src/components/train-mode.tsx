@@ -426,9 +426,30 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
       </div>
 
       <div className="flex items-center justify-between gap-3">
-        <Button variant="ghost" size="sm" onClick={reset}>
-          <RotateCcw className="mr-2 h-4 w-4" /> Nollaa edistyminen
-        </Button>
+        <AlertDialog open={resetOpen} onOpenChange={setResetOpen}>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" size="sm">
+              <RotateCcw className="mr-2 h-4 w-4" /> Nollaa tämän opiskelukokonaisuuden vastaukset
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Nollaa vastaukset tästä opiskelukokonaisuudesta?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Tämä poistaa kaikki vastaukset ja edistymisen vain tästä opiskelukokonaisuudesta. Tätä ei voi peruuttaa.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Peruuta</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={reset}
+                className={buttonVariants({ variant: "destructive" })}
+              >
+                Nollaa vastaukset
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <Button
           onClick={next}
           disabled={!revealed}
