@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, ChevronDown, ExternalLink, Info } from "lucide-react";
+import { BookOpen, Sparkles, ChevronDown, ExternalLink, Info, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 
 export type Kouluaste = "lukio" | "syventävä" | "perustaso";
 
@@ -20,8 +21,16 @@ export type StudyData = {
   title: string;
   summary: string;
   keyConcepts: KeyConcept[];
-  sections: { heading: string; notes: string; bullets: string[] }[];
+  sections: {
+    heading: string;
+    notes: string;
+    bullets: string[];
+    deepen?: string;
+    scope?: string;
+    explainer?: string;
+  }[];
 };
+
 
 const KOULUASTE_STYLES: Record<
   Kouluaste,
@@ -184,17 +193,65 @@ export function StudyGuide({ study }: { study: StudyData }) {
       <section className="space-y-5">
         <h2 className="text-lg font-semibold">Sections</h2>
         {study.sections.map((s, i) => (
-          <article key={i} className="rounded-xl border border-border bg-card p-5">
-            <h3 className="font-display text-2xl text-foreground">{s.heading}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.notes}</p>
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-foreground">
-              {s.bullets.map((b, j) => (
-                <li key={j}>{b}</li>
-              ))}
-            </ul>
-          </article>
+          <SectionArticle key={i} s={s} />
         ))}
       </section>
     </div>
   );
 }
+
+function SectionArticle({
+  s,
+}: {
+  s: StudyData["sections"][number];
+}) {
+  const [explOpen, setExplOpen] = useState(false);
+  return (
+    <article className="rounded-xl border border-border bg-card p-5">
+      <h3 className="font-display text-2xl text-foreground">{s.heading}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.notes}</p>
+      <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-foreground">
+        {s.bullets.map((b, j) => (
+          <li key={j}>{b}</li>
+        ))}
+      </ul>
+
+      {s.scope ? (
+        <div className="mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3">
+          <div className="flex items-start gap-2 text-sm text-foreground">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            <p className="leading-relaxed">{s.scope}</p>
+          </div>
+          {s.explainer ? (
+            <>
+              <button
+                type="button"
+                onClick={() => setExplOpen((v) => !v)}
+                aria-expanded={explOpen}
+                className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-amber-500/40 bg-background/60 px-2.5 py-1 text-xs font-medium text-foreground transition hover:bg-background"
+              >
+                {explOpen ? "Piilota selitys" : "Näytä selitys"}
+                <ChevronDown
+                  className={cn("h-3.5 w-3.5 transition-transform", explOpen && "rotate-180")}
+                />
+              </button>
+              {explOpen ? (
+                <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                  {s.explainer}
+                </p>
+              ) : null}
+            </>
+          ) : null}
+        </div>
+      ) : s.deepen ? (
+        <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+          <BookOpen className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+          <span>
+            <span className="font-semibold text-foreground">Syvennä aineistossa:</span> {s.deepen}
+          </span>
+        </p>
+      ) : null}
+    </article>
+  );
+}
+
