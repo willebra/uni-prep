@@ -1,11 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { Check, X, RotateCcw, ChevronRight, Quote, SkipForward, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Base = {
   id?: string;
@@ -80,6 +91,7 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
   const [tfPick, setTfPick] = useState<boolean | null>(null);
   const [answer, setAnswer] = useState("");
   const [revealed, setRevealed] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -414,9 +426,30 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
       </div>
 
       <div className="flex items-center justify-between gap-3">
-        <Button variant="ghost" size="sm" onClick={reset}>
-          <RotateCcw className="mr-2 h-4 w-4" /> Nollaa edistyminen
-        </Button>
+        <AlertDialog open={resetOpen} onOpenChange={setResetOpen}>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline" size="sm">
+              <RotateCcw className="mr-2 h-4 w-4" /> Nollaa tämän opiskelukokonaisuuden vastaukset
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Nollaa vastaukset tästä opiskelukokonaisuudesta?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Tämä poistaa kaikki vastaukset ja edistymisen vain tästä opiskelukokonaisuudesta. Tätä ei voi peruuttaa.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Peruuta</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={reset}
+                className={buttonVariants({ variant: "destructive" })}
+              >
+                Nollaa vastaukset
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
         <Button
           onClick={next}
           disabled={!revealed}
