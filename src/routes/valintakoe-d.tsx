@@ -108,11 +108,7 @@ function ValintakoeDPage() {
             label="Opiskelukokonaisuudet"
             value="5 (M1–M5)"
           />
-          <InfoCard
-            icon={<Target className="h-4 w-4" />}
-            label="Pisteytys"
-            value="+1,1 / −0,4 ja +2,2 / −0,7"
-          />
+          <ScoringCard />
         </section>
 
         <section className="mt-10">
