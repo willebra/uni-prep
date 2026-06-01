@@ -84,88 +84,69 @@ function Home() {
 
 function LibraryView() {
   const list = useServerFn(listMaterials);
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["materials"],
     queryFn: () => list(),
   });
+
+  const moduleCount = data?.length ?? 0;
 
   return (
     <>
       <div className="mb-10 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
           <Library className="h-3.5 w-3.5 text-accent" />
-          Ready-made study packs
+          Valmiit opiskelukokonaisuudet
         </div>
         <h1 className="font-display text-5xl leading-[1.05] text-foreground md:text-6xl">
-          Pick a course.
+          Valitse koe.
           <br />
-          <span className="italic text-accent">Start training.</span>
+          <span className="italic text-accent">Aloita harjoittelu.</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground md:text-lg">
-          Browse the study packs published for upcoming exams. Each one has a
-          full study guide and instant practice questions.
+          Selaa julkaistuja koesisältöjä. Jokainen sisältää opiskeluoppaan ja
+          virallisen pisteytyksen mukaiset harjoitustehtävät.
         </p>
       </div>
 
-      {isLoading ? (
-        <div className="grid place-items-center py-20 text-muted-foreground">
-          <Loader2 className="h-6 w-6 animate-spin" />
+      <Link
+        to="/valintakoe-d"
+        className="group block rounded-2xl border border-border bg-card p-6 shadow-soft transition hover:border-accent/60 hover:shadow-md md:p-8"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
+              Yliopistojen yhteisvalinta
+            </div>
+            <h2 className="font-display text-2xl leading-tight md:text-3xl">
+              Valintakoe D — Yhteinen osio
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground md:text-base">
+              Psykologia, logopedia, terveys-/hoitotieteet,
+              liikuntabiologia/valmennustiede.
+            </p>
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              {isLoading ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  Ladataan…
+                </span>
+              ) : (
+                <span>{moduleCount} opiskelukokonaisuutta (M1–M5)</span>
+              )}
+              <span aria-hidden>·</span>
+              <span>Harjoitustehtävät T2–T5</span>
+              <span aria-hidden>·</span>
+              <span>3 h koe</span>
+            </div>
+          </div>
+          <ArrowRight className="mt-1 h-6 w-6 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
         </div>
-      ) : error ? (
-        <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center text-sm text-destructive">
-          Couldn't load the library. Try refreshing.
-        </div>
-      ) : !data || data.length === 0 ? (
-        <EmptyLibrary />
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2">
-          {data.map((m) => (
-            <Link
-              key={m.id}
-              to="/m/$id"
-              params={{ id: m.id }}
-              className="group block rounded-2xl border border-border bg-card p-5 shadow-soft transition hover:border-accent/60 hover:shadow-md"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h2 className="font-display text-2xl leading-tight text-foreground">
-                  {m.title}
-                </h2>
-                <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
-              </div>
-              {m.summary ? (
-                <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">
-                  {m.summary}
-                </p>
-              ) : null}
-              <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
-                <span>{m.sectionCount} sections</span>
-                <span aria-hidden>·</span>
-                <span>{m.conceptCount} key concepts</span>
-                <span aria-hidden>·</span>
-                <span>{new Date(m.created_at).toLocaleDateString()}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+      </Link>
     </>
   );
 }
 
-function EmptyLibrary() {
-  return (
-    <div className="rounded-2xl border border-dashed border-border bg-card/60 p-10 text-center">
-      <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full bg-muted text-muted-foreground">
-        <Library className="h-5 w-5" />
-      </div>
-      <h3 className="font-display text-xl">No study packs yet</h3>
-      <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-        Be the first to add material. Paste a reader, upload a PDF, and we'll
-        generate a study guide and practice questions.
-      </p>
-    </div>
-  );
-}
 
 function CreateView() {
   const navigate = useNavigate();
