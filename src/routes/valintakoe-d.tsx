@@ -342,3 +342,44 @@ function InfoCard({
     </div>
   );
 }
+
+function ScoringCard() {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 shadow-soft">
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Target className="h-4 w-4" />
+        Pisteytys
+      </div>
+      <div className="mt-3 space-y-2 text-sm">
+        <div>
+          <p className="font-medium text-foreground">
+            Tosi/epätosi- ja kyllä/ei-kysymykset
+          </p>
+          <p className="mt-0.5 text-muted-foreground">
+            <span className="text-success">oikea +1,1</span>
+            <span className="mx-1.5 text-muted-foreground/60">·</span>
+            <span className="text-destructive">väärä −0,4</span>
+            <span className="mx-1.5 text-muted-foreground/60">·</span>
+            <span>vastaamatta −0,2</span>
+          </p>
+        </div>
+        <div>
+          <p className="font-medium text-foreground">
+            Monivalinta- ja laskutehtävät
+          </p>
+          <p className="mt-0.5 text-muted-foreground">
+            <span className="text-success">oikea +2,2</span>
+            <span className="mx-1.5 text-muted-foreground/60">·</span>
+            <span className="text-destructive">väärä −0,7</span>
+            <span className="mx-1.5 text-muted-foreground/60">·</span>
+            <span>vastaamatta −0,2</span>
+          </p>
+        </div>
+      </div>
+      <p className="mt-3 text-xs italic text-muted-foreground">
+        Vinkki: myös vastaamatta jättämisestä menettää 0,2 pistettä, joten
+        arvaaminen kannattaa useimmiten enemmän kuin tyhjäksi jättäminen.
+      </p>
+    </div>
+  );
+}
