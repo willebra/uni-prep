@@ -413,8 +413,8 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
           size="lg"
           className={cn(
             "shadow-md transition-all",
-            revealed &&
-              "ring-2 ring-accent/50 ring-offset-2 ring-offset-background hover:ring-accent hover:shadow-lg motion-safe:animate-pulse",
+            revealed && (q.type !== "flashcard" || progress[i]) &&
+              "bg-accent text-accent-foreground hover:bg-accent/90 ring-2 ring-accent/50 ring-offset-2 ring-offset-background hover:shadow-lg motion-safe:animate-pulse",
           )}
         >
           Seuraava tehtävä <ChevronRight className="ml-1 h-4 w-4" />
