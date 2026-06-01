@@ -91,6 +91,7 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
   const [tfPick, setTfPick] = useState<boolean | null>(null);
   const [answer, setAnswer] = useState("");
   const [revealed, setRevealed] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
 
   useEffect(() => {
     try {
