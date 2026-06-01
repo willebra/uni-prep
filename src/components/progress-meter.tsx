@@ -210,11 +210,7 @@ export function ProgressMeter({
 
         {nextModule ? (
           <Button asChild size="sm" className="shrink-0">
-            <Link
-              to="/m/$id"
-              params={{ id: nextModule.id }}
-              search={{ tab: "train" } as never}
-            >
+            <Link to="/m/$id" params={{ id: nextModule.id }}>
               Siirry seuraavaan tehtävään
               <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
             </Link>
