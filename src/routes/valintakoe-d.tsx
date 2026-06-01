@@ -275,9 +275,10 @@ function ValintakoeDPage() {
               harjoittelemaan koetyyppisiä tehtäviä.
             </li>
             <li>
-              Tehtävätyypit kattavat oikein/väärin -väittämät (T2),
-              monivalinnat (T3), numeeriset vastaukset (T4) sekä
-              aineistotehtävät (T5). Pisteytys noudattaa virallista kaavaa.
+              Tehtävätyypit kattavat käsitekortit (T1), oikein/väärin
+              -väittämät (T2), monivalinnat (T3), numeeriset vastaukset (T4)
+              sekä aineistotehtävät (T5). Pisteytys noudattaa virallista
+              kaavaa.
             </li>
             <li>
               Etene moduuli kerrallaan järjestyksessä M1 → M5 tai valitse
