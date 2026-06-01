@@ -123,7 +123,10 @@ function MaterialPage() {
             <TabsTrigger value="study">
               <FileText className="mr-2 h-4 w-4" /> Study guide
             </TabsTrigger>
-            <TabsTrigger value="train">
+          <TabsTrigger
+              value="train"
+              className="data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+            >
               <Dumbbell className="mr-2 h-4 w-4" /> Train ({questions.length})
             </TabsTrigger>
           </TabsList>
