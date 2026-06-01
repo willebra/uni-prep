@@ -260,7 +260,7 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
                   disabled={revealed}
                   className={cn(
                     "rounded-lg border bg-background p-3 text-sm font-medium transition",
-                    !revealed && "border-accent bg-accent/10 text-accent-foreground shadow-sm hover:bg-accent hover:text-accent-foreground",
+                    !revealed && "border-accent bg-accent/10 shadow-sm hover:bg-accent hover:text-accent-foreground",
                     revealed && !isCorrect && !isPicked && "border-border",
                     revealed && isCorrect && "border-success bg-success/10",
                     revealed && isPicked && !isCorrect && "border-destructive bg-destructive/10",
