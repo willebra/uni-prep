@@ -91,6 +91,7 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
   useEffect(() => {
     try {
       localStorage.setItem(storageKey, JSON.stringify(progress));
+      window.dispatchEvent(new Event("crampad:progress"));
     } catch {}
   }, [progress, storageKey]);
 

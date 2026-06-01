@@ -110,7 +110,7 @@ export const listMaterials = createServerFn({ method: "GET" }).handler(
   async () => {
     const { data, error } = await supabaseAdmin
       .from("materials")
-      .select("id,title,study,created_at")
+      .select("id,title,study,questions,created_at")
       .order("created_at", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);
@@ -120,6 +120,7 @@ export const listMaterials = createServerFn({ method: "GET" }).handler(
         sections?: unknown[];
         keyConcepts?: unknown[];
       };
+      const questions = (m as { questions?: unknown }).questions;
       return {
         id: m.id,
         title: m.title,
@@ -129,6 +130,7 @@ export const listMaterials = createServerFn({ method: "GET" }).handler(
         conceptCount: Array.isArray(study.keyConcepts)
           ? study.keyConcepts.length
           : 0,
+        questionCount: Array.isArray(questions) ? questions.length : 0,
       };
     });
   },
