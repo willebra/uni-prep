@@ -184,7 +184,10 @@ function ValintakoeDPage() {
                           <h3 className="font-display text-xl leading-tight">
                             {m.title}
                           </h3>
-                          <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
+                          <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground shadow-sm transition group-hover:gap-1.5 group-hover:shadow-md">
+                            Avaa
+                            <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+                          </span>
                         </div>
                         {m.summary ? (
                           <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
