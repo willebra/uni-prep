@@ -110,7 +110,7 @@ export const listMaterials = createServerFn({ method: "GET" }).handler(
   async () => {
     const { data, error } = await supabaseAdmin
       .from("materials")
-      .select("id,title,study,created_at")
+      .select("id,title,study,questions,created_at")
       .order("created_at", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);
