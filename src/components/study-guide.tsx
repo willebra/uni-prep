@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, ChevronDown, ExternalLink, Info } from "lucide-react";
+import { BookOpen, Sparkles, ChevronDown, ExternalLink, Info, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 
 export type Kouluaste = "lukio" | "syventävä" | "perustaso";
 
