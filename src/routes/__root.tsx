@@ -78,7 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CramPad — Last-minute exam study & training" },
+      { title: "Uniprep — Last-minute exam study & training" },
       {
         name: "description",
         content:
@@ -86,6 +86,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { property: "og:title", content: "Uniprep — Last-minute exam study & training" },
+      { name: "twitter:title", content: "Uniprep — Last-minute exam study & training" },
+      { name: "description", content: "Exam Prep Pal is a public web app for reviewing and practicing for university entrance exams." },
+      { property: "og:description", content: "Exam Prep Pal is a public web app for reviewing and practicing for university entrance exams." },
+      { name: "twitter:description", content: "Exam Prep Pal is a public web app for reviewing and practicing for university entrance exams." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972775b2-d24d-4349-8629-b772be1c00d1/id-preview-5c53df20--55721993-73d7-4e8f-b644-c64400003038.lovable.app-1780325644994.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/972775b2-d24d-4349-8629-b772be1c00d1/id-preview-5c53df20--55721993-73d7-4e8f-b644-c64400003038.lovable.app-1780325644994.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
