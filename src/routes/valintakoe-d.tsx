@@ -121,9 +121,6 @@ function ValintakoeDPage() {
         <section className="mt-10">
           <div className="mb-4 flex items-baseline justify-between">
             <h2 className="font-display text-2xl">Opiskelukokonaisuudet</h2>
-            <span className="text-xs text-muted-foreground">
-              Etenemismittari tulossa
-            </span>
           </div>
 
           {isLoading ? (
@@ -139,39 +136,57 @@ function ValintakoeDPage() {
               Opiskelukokonaisuuksia ei vielä löytynyt.
             </p>
           ) : (
-            <ol className="grid gap-3">
-              {modules.map((m, i) => (
-                <li key={m.id}>
-                  <Link
-                    to="/m/$id"
-                    params={{ id: m.id }}
-                    className="group flex items-start gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft transition hover:border-accent/60 hover:shadow-md"
-                  >
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-muted text-sm font-semibold text-foreground">
-                      {i + 1}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-3">
-                        <h3 className="font-display text-xl leading-tight">
-                          {m.title}
-                        </h3>
-                        <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
+            <>
+              <ProgressMeter
+                modules={modules.map((m) => ({
+                  id: m.id,
+                  title: m.title,
+                  total: m.questionCount,
+                }))}
+              />
+              <ol className="mt-4 grid gap-3">
+                {modules.map((m, i) => (
+                  <li key={m.id}>
+                    <Link
+                      to="/m/$id"
+                      params={{ id: m.id }}
+                      className="group flex items-start gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft transition hover:border-accent/60 hover:shadow-md"
+                    >
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-muted text-sm font-semibold text-foreground">
+                        {i + 1}
                       </div>
-                      {m.summary ? (
-                        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                          {m.summary}
-                        </p>
-                      ) : null}
-                      <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                        <span>{m.sectionCount} osiota</span>
-                        <span aria-hidden>·</span>
-                        <span>{m.conceptCount} käsitettä</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="font-display text-xl leading-tight">
+                            {m.title}
+                          </h3>
+                          <ArrowRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
+                        </div>
+                        {m.summary ? (
+                          <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                            {m.summary}
+                          </p>
+                        ) : null}
+                        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                          <span>{m.sectionCount} osiota</span>
+                          <span aria-hidden>·</span>
+                          <span>{m.conceptCount} käsitettä</span>
+                          <span aria-hidden>·</span>
+                          <span>{m.questionCount} tehtävää</span>
+                        </div>
+                        {m.questionCount > 0 ? (
+                          <ModuleProgressBar
+                            materialId={m.id}
+                            total={m.questionCount}
+                            className="mt-3"
+                          />
+                        ) : null}
                       </div>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ol>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </>
           )}
         </section>
 
