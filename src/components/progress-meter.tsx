@@ -161,10 +161,10 @@ export function ProgressMeter({
           <Trophy className="h-4 w-4 text-accent" />
           <h3 className="font-display text-lg">{title}</h3>
         </div>
-        <span className="text-2xl font-display tabular-nums">{aggregate.percent}%</span>
+        <span className="text-2xl font-display tabular-nums">{percent}%</span>
       </div>
 
-      <Progress value={aggregate.percent} className="mt-3 h-2.5" />
+      <Progress value={percent} className="mt-3 h-2.5" />
 
       <div className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
         <Stat
