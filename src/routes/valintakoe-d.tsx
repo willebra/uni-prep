@@ -149,14 +149,7 @@ function ValintakoeDPage() {
             </p>
           ) : (
             <>
-              <ProgressMeter
-                modules={modules.map((m) => ({
-                  id: m.id,
-                  title: m.title,
-                  total: m.questionCount,
-                }))}
-              />
-              <ol className="mt-4 grid gap-3">
+              <ol className="grid gap-3">
                 {modules.map((m, i) => (
                   <li key={m.id}>
                     <Link
