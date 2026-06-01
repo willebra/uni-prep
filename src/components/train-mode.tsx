@@ -324,7 +324,7 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
               <Button
                 onClick={() => setRevealed(true)}
                 size="lg"
-                className="w-full shadow-md"
+                className="w-full bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
               >
                 <Eye className="mr-2 h-5 w-5" /> Tarkista selitys tästä
               </Button>
