@@ -12,6 +12,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Library,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +20,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createMaterial, listMaterials } from "@/lib/study.functions";
 import { extractPdfText } from "@/lib/pdf-extract";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { buttonVariants } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -94,8 +107,23 @@ function LibraryView() {
     queryKey: ["materials"],
     queryFn: () => list(),
   });
+  const [resetOpen, setResetOpen] = useState(false);
 
   const moduleCount = data?.length ?? 0;
+
+  function resetAllProgress() {
+    try {
+      const keys = Object.keys(localStorage).filter((k) =>
+        k.startsWith("crampad:progress:")
+      );
+      keys.forEach((k) => localStorage.removeItem(k));
+      window.dispatchEvent(new Event("crampad:progress"));
+      toast.success("Kaikki vastaukset ja edistyminen nollattu.");
+    } catch {
+      toast.error("Nollaus epäonnistui. Yritä uudelleen.");
+    }
+    setResetOpen(false);
+  }
 
   return (
     <>
@@ -149,6 +177,41 @@ function LibraryView() {
           <ArrowRight className="mt-1 h-6 w-6 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-accent" />
         </div>
       </Link>
+
+      <div className="mt-12 flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-6 shadow-soft">
+        <p className="text-sm text-muted-foreground">
+          Haluatko aloittaa kaiken alusta?
+        </p>
+        <AlertDialog open={resetOpen} onOpenChange={setResetOpen}>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 border-destructive/30 text-destructive hover:bg-destructive/10"
+            >
+              <RotateCcw className="h-4 w-4" />
+              Nollaa kaikki vastaukset
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Haluatko varmasti nollata kaikki vastaukset?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Tämä poistaa kaiken edistymisen ja kaikki vastaukset kaikista opiskelukokonaisuuksista. Tätä ei voi peruuttaa.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Peruuta</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={resetAllProgress}
+                className={buttonVariants({ variant: "destructive" })}
+              >
+                Nollaa kaikki
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </>
   );
 }
