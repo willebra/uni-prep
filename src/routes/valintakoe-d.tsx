@@ -109,6 +109,11 @@ function ValintakoeDPage() {
             label="Opiskelukokonaisuudet"
             value="5 (M1–M5)"
           />
+          <InfoCard
+            icon={<Calendar className="h-4 w-4" />}
+            label="Koeajankohta"
+            value="3.6.2026"
+          />
           <ScoringCard />
         </section>
 
