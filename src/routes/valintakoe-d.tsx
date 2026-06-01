@@ -24,6 +24,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { listMaterials } from "@/lib/study.functions";
+import { ProgressMeter, ModuleProgressBar } from "@/components/progress-meter";
 
 export const Route = createFileRoute("/valintakoe-d")({
   head: () => ({
