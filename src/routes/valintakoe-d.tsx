@@ -205,6 +205,60 @@ function ValintakoeDPage() {
   );
 }
 
+const MATERIALS: MaterialItem[] = [
+  {
+    id: "tuki-2026",
+    group: "Ennakko- ja harjoittelumateriaalit",
+    title: "Ennakkomateriaalin tueksi",
+    source: "Tukimateriaali · 2026",
+    description:
+      "Käsitesanasto, joka selittää kokeen keskeiset tilastolliset ja menetelmälliset käsitteet: efektikoko (Cohenin d, Hedgesin g), luottamusväli ja luottoväli, julkaisuvinouma, tilastollinen voima, RCT, standardointi sekä ehdolliset merkinnät. Käytettävissä myös kokeessa.",
+    url: "https://www.helsinki.fi/assets/drupal/2026-06/Ennakkomateriaalin%20tueksi_final_suomi.pdf",
+    icon: "file",
+  },
+  {
+    id: "noetel-2024",
+    group: "Ennakko- ja harjoittelumateriaalit",
+    title: "Noetel ym. (2024): Effect of exercise for depression",
+    source: "Tieteellinen artikkeli · BMJ 2024",
+    description:
+      "Systemaattinen katsaus ja verkkometa-analyysi liikunnan vaikutuksesta masennukseen. Harjoittele luottovälien tulkintaa, annos-vastetta, harhan riskiä ja julkaisuvinoumaa.",
+    url: "https://www.helsinki.fi/assets/drupal/2026-06/Noetel%20et%20al.%202024%2C%20Effect%20of%20exercise%20for%20depression.pdf",
+    icon: "file",
+  },
+  {
+    id: "simpson-2023",
+    group: "Ennakko- ja harjoittelumateriaalit",
+    title:
+      "Simpson (2023): A Recipe for Disappointment – Policy, Effect Size and the Winner's Curse",
+    source: "Tieteellinen artikkeli · 2023",
+    description:
+      "Efektikoko, mittausvirhe ja 'winner's curse': miksi valikoidut, suurimmat mitatut vaikutukset ovat todennäköisesti yliarvioita, ja miten korjaus tehdään. Kokeen käsitteellisesti vaativin aineisto.",
+    url: "https://www.helsinki.fi/assets/drupal/2026-06/Simpson_2023_Policy%20Effect%20Size%20and%20the%20Winner%20s%20Curse.pdf",
+    icon: "file",
+  },
+  {
+    id: "koe-2025",
+    group: "Viime vuoden koe",
+    title: "Valintakoe D 2025 – yhteinen osio",
+    source: "Todellinen koe · 2025",
+    description:
+      "Viime vuoden yhteisen osion koe kokonaisuudessaan. Näyttää kokeen rakenteen (tehtäväkokonaisuudet A1–A5), tehtävätyypit ja pisteytyksen. Hyvä malli harjoitteluun, vaikka ennakkomateriaali vaihtuu vuosittain.",
+    url: "https://yliopistovalinnat.fi/wp-content/uploads/2025/06/Valintakoe_D_yhteinen_osio_suomi.pdf",
+    icon: "exam",
+  },
+];
+
+interface MaterialItem {
+  id: string;
+  group: string;
+  title: string;
+  source: string;
+  description: string;
+  url: string;
+  icon: "file" | "exam";
+}
+
 function InfoCard({
   icon,
   label,
