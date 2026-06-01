@@ -136,6 +136,24 @@ function ValintakoeDPage() {
             <h2 className="font-display text-2xl">Opiskelukokonaisuudet</h2>
           </div>
 
+          <div className="mb-5 rounded-2xl border border-border border-l-4 border-l-accent bg-card/60 p-5">
+            <div className="flex items-start gap-3">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  M1–M5 ovat tämän sivuston opiskelukokonaisuuksia — eivät kokeen osioita
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                  Moduulit M1–M5 on järjestetty aiheen ja taidon mukaan harjoittelua varten. Itse valintakoe
+                  jakautuu virallisesti tehtäväkokonaisuuksiin A1–A5 (A1 = ennakkomateriaalipohjaiset tehtävät,
+                  A2 = väittämät, A3–A5 = kokeessa annettuun aineistoon perustuvat tehtävät). Sama taito on
+                  hyödyksi useassa kokeen osiossa: esimerkiksi efektikoko (M2) ja winner’s curse (M4) auttavat
+                  sekä A1:n ennakkomateriaalitehtävissä että A3–A5:n tuntemattomissa aineistotehtävissä.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {isLoading ? (
             <div className="grid place-items-center py-16 text-muted-foreground">
               <Loader2 className="h-6 w-6 animate-spin" />
