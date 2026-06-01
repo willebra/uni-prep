@@ -224,8 +224,9 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
                   onClick={() => submitMcq(idx)}
                   disabled={revealed}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-lg border border-border bg-background p-3 text-left text-sm transition",
-                    !revealed && "hover:border-accent hover:bg-accent/5",
+                    "flex w-full items-center gap-3 rounded-lg border bg-background p-3 text-left text-sm transition",
+                    !revealed && "border-accent/40 shadow-sm hover:border-accent hover:bg-accent/10",
+                    revealed && !isCorrect && !isPicked && "border-border",
                     revealed && isCorrect && "border-success bg-success/10",
                     revealed && isPicked && !isCorrect && "border-destructive bg-destructive/10",
                   )}
@@ -258,8 +259,9 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
                   onClick={() => submitTf(opt.value)}
                   disabled={revealed}
                   className={cn(
-                    "rounded-lg border border-border bg-background p-3 text-sm font-medium transition",
-                    !revealed && "hover:border-accent hover:bg-accent/5",
+                    "rounded-lg border bg-background p-3 text-sm font-medium transition",
+                    !revealed && "border-accent bg-accent/10 shadow-sm hover:bg-accent hover:text-accent-foreground",
+                    revealed && !isCorrect && !isPicked && "border-border",
                     revealed && isCorrect && "border-success bg-success/10",
                     revealed && isPicked && !isCorrect && "border-destructive bg-destructive/10",
                   )}
@@ -285,7 +287,11 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
               {q.unit && <span className="text-sm text-muted-foreground">{q.unit}</span>}
             </div>
             {!revealed && (
-              <Button onClick={submitNumeric} disabled={answer.trim().length === 0}>
+              <Button
+                onClick={submitNumeric}
+                disabled={answer.trim().length === 0}
+                className="bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
+              >
                 Tarkista
               </Button>
             )}
@@ -311,7 +317,11 @@ export function TrainMode({ materialId, questions }: { materialId: string; quest
               disabled={revealed}
             />
             {!revealed && (
-              <Button onClick={submitShort} disabled={answer.trim().length < 3}>
+              <Button
+                onClick={submitShort}
+                disabled={answer.trim().length < 3}
+                className="bg-accent text-accent-foreground shadow-md hover:bg-accent/90"
+              >
                 Tarkista
               </Button>
             )}
