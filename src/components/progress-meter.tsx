@@ -1,6 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
+import { Link } from "@tanstack/react-router";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, Circle, XCircle, MinusCircle, Trophy } from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, XCircle, MinusCircle, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type Outcome = "correct" | "wrong" | "skipped";
@@ -154,6 +156,11 @@ export function ProgressMeter({
     (m) => m.total > 0 && m.stats.answered >= m.total,
   ).length;
 
+  // Next module to continue with: first one with unfinished questions.
+  const nextModule = perModule.find(
+    (m) => m.total > 0 && m.stats.answered < m.total,
+  );
+
   return (
     <div className="rounded-2xl border border-border bg-card p-5 shadow-soft sm:p-6">
       <div className="flex items-center justify-between gap-3">
@@ -189,17 +196,31 @@ export function ProgressMeter({
         />
       </div>
 
-      {modules.length > 1 ? (
-        <p className="mt-4 text-xs text-muted-foreground">
-          {aggregate.answered} / {aggregate.total} tehtävää tehty · {completedModules} /
-          {" "}
-          {modules.length} kokonaisuutta valmiina
-        </p>
-      ) : (
-        <p className="mt-4 text-xs text-muted-foreground">
-          {aggregate.answered} / {aggregate.total} tehtävää tehty
-        </p>
-      )}
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {modules.length > 1 ? (
+          <p className="text-xs text-muted-foreground">
+            {aggregate.answered} / {aggregate.total} tehtävää tehty ·{" "}
+            {completedModules} / {modules.length} kokonaisuutta valmiina
+          </p>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            {aggregate.answered} / {aggregate.total} tehtävää tehty
+          </p>
+        )}
+
+        {nextModule ? (
+          <Button asChild size="sm" className="shrink-0">
+            <Link to="/m/$id" params={{ id: nextModule.id }}>
+              Siirry seuraavaan tehtävään
+              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        ) : aggregate.total > 0 ? (
+          <span className="text-xs font-medium text-success">
+            Kaikki tehtävät tehty!
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }

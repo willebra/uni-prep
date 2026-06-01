@@ -85,6 +85,18 @@ function ValintakoeDPage() {
       </header>
 
       <main className="mx-auto max-w-4xl px-4 py-8 md:px-6 md:py-12">
+        {modules.length > 0 ? (
+          <div className="mb-8">
+            <ProgressMeter
+              modules={modules.map((m) => ({
+                id: m.id,
+                title: m.title,
+                total: m.questionCount,
+              }))}
+            />
+          </div>
+        ) : null}
+
         <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
           <Target className="h-3.5 w-3.5 text-accent" />
           Yliopistojen yhteisvalinta
@@ -137,14 +149,7 @@ function ValintakoeDPage() {
             </p>
           ) : (
             <>
-              <ProgressMeter
-                modules={modules.map((m) => ({
-                  id: m.id,
-                  title: m.title,
-                  total: m.questionCount,
-                }))}
-              />
-              <ol className="mt-4 grid gap-3">
+              <ol className="grid gap-3">
                 {modules.map((m, i) => (
                   <li key={m.id}>
                     <Link
