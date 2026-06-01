@@ -172,6 +172,74 @@ function ValintakoeDPage() {
           )}
         </section>
 
+        <section className="mt-10">
+          <h2 className="font-display text-2xl">Taustamateriaalit</h2>
+          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+            Kaikki kokeen ennakkomateriaalit sekä viime vuoden koe.
+            Ennakkomateriaalit ovat käytettävissä myös itse valintakokeessa.
+          </p>
+
+          {["Ennakko- ja harjoittelumateriaalit", "Viime vuoden koe"].map(
+            (group) => {
+              const groupItems = MATERIALS.filter((m) => m.group === group);
+              return (
+                <div key={group} className="mt-6">
+                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                    {group}
+                  </h3>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {groupItems.map((m) => {
+                      const IconComp =
+                        m.icon === "exam" ? ClipboardList : FileText;
+                      return (
+                        <Card
+                          key={m.id}
+                          className="flex flex-col border-border bg-card shadow-soft transition hover:border-accent/40 hover:shadow-md"
+                        >
+                          <CardHeader className="pb-3">
+                            <div className="flex items-start gap-3">
+                              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-muted">
+                                <IconComp className="h-4 w-4 text-muted-foreground" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <CardTitle className="font-display text-base leading-snug">
+                                  {m.title}
+                                </CardTitle>
+                                <CardDescription className="mt-0.5 text-xs">
+                                  {m.source}
+                                </CardDescription>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="flex flex-1 flex-col pb-4">
+                            <p className="flex-1 text-sm text-muted-foreground">
+                              {m.description}
+                            </p>
+                            <a
+                              href={m.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-4 inline-flex items-center gap-1.5 self-start rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition hover:opacity-90"
+                            >
+                              Avaa PDF
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </a>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            },
+          )}
+
+          <p className="mt-6 text-xs text-muted-foreground">
+            Materiaalit avautuvat ulkoisilla sivustoilla (Helsingin yliopisto ja
+            yliopistovalinnat.fi).
+          </p>
+        </section>
+
         <section className="mt-10 rounded-2xl border border-border bg-card/60 p-6">
           <div className="flex items-center gap-2">
             <BookOpen className="h-4 w-4 text-accent" />
