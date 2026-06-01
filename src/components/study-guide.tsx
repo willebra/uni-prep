@@ -33,11 +33,11 @@ const KOULUASTE_STYLES: Record<
   },
   syventävä: {
     label: "Syventävä",
-    className: "border-accent/40 bg-accent/15 text-accent-foreground",
+    className: "border-accent/60 bg-accent/20 text-foreground",
   },
   perustaso: {
     label: "Perusasia",
-    className: "border-border bg-muted text-muted-foreground",
+    className: "border-border bg-muted text-foreground",
   },
 };
 
