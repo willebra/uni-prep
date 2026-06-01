@@ -21,8 +21,16 @@ export type StudyData = {
   title: string;
   summary: string;
   keyConcepts: KeyConcept[];
-  sections: { heading: string; notes: string; bullets: string[] }[];
+  sections: {
+    heading: string;
+    notes: string;
+    bullets: string[];
+    deepen?: string;
+    scope?: string;
+    explainer?: string;
+  }[];
 };
+
 
 const KOULUASTE_STYLES: Record<
   Kouluaste,
