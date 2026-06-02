@@ -13,6 +13,7 @@ export type KeyConcept = {
   official?: string;
   plain?: string;
   example?: string;
+  deepen?: string;
   kouluaste?: Kouluaste;
   link?: { label: string; url: string };
 };
@@ -67,7 +68,11 @@ function KouluasteBadge({ value }: { value: Kouluaste }) {
 
 function ConceptCard({ c }: { c: KeyConcept }) {
   const [open, setOpen] = useState(false);
-  const hasExpand = Boolean(c.official || c.plain || c.example || c.link);
+  const hasExpand = Boolean(c.official || c.plain || c.example || c.link || c.deepen);
+  const deepenIsNote =
+    !!c.deepen &&
+    (c.deepen.startsWith("Ei ennakkomateriaalissa") ||
+      c.deepen.startsWith("Kokeen pisteytyssääntö"));
 
   return (
     <div className="rounded-lg border border-border bg-card p-4">
@@ -125,11 +130,31 @@ function ConceptCard({ c }: { c: KeyConcept }) {
                   <p className="mt-1 text-sm leading-relaxed text-foreground">
                     {c.plain}
                   </p>
-                  {c.example ? (
-                    <p className="mt-1 text-sm italic leading-relaxed text-muted-foreground">
-                      Esim. {c.example}
-                    </p>
-                  ) : null}
+                </div>
+              ) : null}
+
+              {c.example ? (
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                    Esimerkki
+                  </div>
+                  <div className="mt-1 rounded-md border border-accent/30 bg-accent/10 p-2.5 font-mono text-xs leading-relaxed text-foreground">
+                    {c.example}
+                  </div>
+                </div>
+              ) : null}
+
+              {c.deepen ? (
+                <div className="flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground">
+                  {deepenIsNote ? null : (
+                    <BookOpen className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+                  )}
+                  <span>
+                    {deepenIsNote ? null : (
+                      <span className="font-semibold text-foreground">Aineistoviite: </span>
+                    )}
+                    {c.deepen}
+                  </span>
                 </div>
               ) : null}
 
