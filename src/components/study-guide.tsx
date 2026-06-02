@@ -13,6 +13,7 @@ export type KeyConcept = {
   official?: string;
   plain?: string;
   example?: string;
+  deepen?: string;
   kouluaste?: Kouluaste;
   link?: { label: string; url: string };
 };
