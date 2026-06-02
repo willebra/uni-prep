@@ -68,7 +68,11 @@ function KouluasteBadge({ value }: { value: Kouluaste }) {
 
 function ConceptCard({ c }: { c: KeyConcept }) {
   const [open, setOpen] = useState(false);
-  const hasExpand = Boolean(c.official || c.plain || c.example || c.link);
+  const hasExpand = Boolean(c.official || c.plain || c.example || c.link || c.deepen);
+  const deepenIsNote =
+    !!c.deepen &&
+    (c.deepen.startsWith("Ei ennakkomateriaalissa") ||
+      c.deepen.startsWith("Kokeen pisteytyssääntö"));
 
   return (
     <div className="rounded-lg border border-border bg-card p-4">
