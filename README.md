@@ -1,4 +1,6 @@
 # Exam Prep Pal
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fwillebra%2Funi-prep.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fwillebra%2Funi-prep?ref=badge_shield)
+
 
 I want to build a public web app for reviewing material published 2 days before a university entrance exam and practicing for the exam. No login or access control — anyone with the link can use it.
 
@@ -38,3 +40,7 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fwillebra%2Funi-prep.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fwillebra%2Funi-prep?ref=badge_large)
